@@ -12,39 +12,43 @@ type student struct {
 	age int
 	grade int
 }
-var students []string
+func newStudent(l string) *student{
+	s:= strings.Split(l," ")
+	p := student{}
+	p.name = s[0]
+	p.age,_ = strconv.Atoi(s[1])
+	p.grade ,_ = strconv.Atoi(s[2])
+	return &p
+}
 
-
-func (s student) allStudents(stud student)(students[]string){
-	var v [3] string
-	v[0] = s.name
-	v[1] = strconv.Itoa(s.age)
-	v[2] = strconv.Itoa(s.grade)
-	students = append(students,v[0],v[1],v[2],"\n")
-	fmt.Println(students)
+type University struct {
+	studentByName map[string]*student
+}
+func newUniversity (stud *student) *University {//нужна для создания экземпляра университете с занесением нового студента в map
+		studentNew := map[string]*student{
+		stud.name : stud,
+	}
+		s := University{studentNew}
+	return &s
+}
+/*func (u *University)put(s *student)(){//добавление студента в срез University
 	return
 }
 
+func (u *University) get()[]student  {
+return nil
+}*/
 func main() {
+	//university := NewUniversity()
+	//m := make(map[string]student)
 	scanner:=bufio.NewScanner(os.Stdin)
 	scanner.Split(bufio.ScanLines)
-	//m := make(map[int]*Student)
 	for scanner.Scan() {
 		line := scanner.Text()
-		s:= strings.Split(line," ")
-		p:= student{}
-		for i := 0; i < len(s); i++ {
-			if i == 0 {
-				p.name = s[i]
-			}
-			if i == 1{
-				p.age,_ = strconv.Atoi(s[i])
-			}
-			if i == 2{
-				p.grade ,_ = strconv.Atoi(s[i])
-			}
-		}
-		fmt.Println("-------------------")
-		p.allStudents(p)
+		l := newStudent(line)
+		fmt.Println(l)
+		p:=newUniversity(l)
+		fmt.Println(p)
 	}
+	//university.put(l)
 }
